@@ -291,7 +291,7 @@ TeaCup::TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation,
 	this->modelUniformLocation = modelUniformLocation;
 	this->vertexPositionAttribLocation = vertexPositionAttribLocation;
 	this->colorUniformLocation = colorUniformLocation;
-	
+
 	showControlPoints = false;
 
 	initPatches();
@@ -327,10 +327,11 @@ void TeaCup::display()
 
 		glUniform4fv(colorUniformLocation, 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 	}
-	
+
 	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 }
 
+// set to true to show control points
 void TeaCup::setShowControlPoints(bool show)
 {
 	showControlPoints = show;
@@ -340,6 +341,7 @@ TeaCup::~TeaCup()
 {
 }
 
+// initialize all patches
 void TeaCup::initPatches()
 {
 	patches = new std::vector<Patch*>();
@@ -380,6 +382,7 @@ void TeaCup::initPatches()
 	}
 }
 
+// initialize all control points
 void TeaCup::initPoints()
 {
 	glGenVertexArrays(1, &pointsVAO);

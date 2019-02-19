@@ -25,6 +25,7 @@ Patch::~Patch()
 {
 }
 
+// initialize the patch
 void Patch::init()
 {
 	vertices = new std::vector<glm::vec4>();
@@ -51,6 +52,7 @@ void Patch::init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+// calculate the vertices of the patch based on its control points
 void Patch::generateSurface(std::vector<glm::vec4>* vertices, std::vector<GLuint>* indices)
 {
 	int N = 10;

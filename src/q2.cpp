@@ -11,11 +11,10 @@
 const char *WINDOW_TITLE = "A2Q2";
 const double FRAME_RATE_MS = 1000.0 / 60.0;
 
+// uniform variable locations
 GLuint  modelUniformLocation, viewUniformLocation, projectionUniformLocation, colorUniformLocation;
 
-std::vector<glm::vec4> *surfaceVertices;
-std::vector<GLuint> *surfaceIndices;
-
+// tea cup
 TeaCup *tc;
 
 //----------------------------------------------------------------------------
@@ -53,7 +52,7 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	tc->display();
+	tc->display(); // display the tea cup
 
 	glutSwapBuffers();
 	glFinish();
@@ -64,6 +63,7 @@ void display(void)
 bool showControlPoints = false;
 void keyboard(unsigned char key, int x, int y)
 {
+	// bind show control points on space bar press
 	switch (key) {
 	case 033: // Escape Key
 	case 'q': case 'Q':
@@ -87,6 +87,7 @@ void mouse(int button, int state, int x, int y)
 
 //----------------------------------------------------------------------------
 
+// rotate camera around the world
 GLfloat cameraAngle = 0.0f;
 void update(void)
 {
@@ -103,7 +104,6 @@ void update(void)
 
 //----------------------------------------------------------------------------
 
-// TODO: change back to perspective if required or if want to
 void reshape(int width, int height)
 {
 	glViewport(0, 0, width, height);
