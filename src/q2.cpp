@@ -103,7 +103,7 @@ void reshape(int width, int height)
 
 	/*GLfloat aspect = GLfloat(width) / height;
 	glm::mat4  projection = glm::perspective(glm::radians(45.0f), aspect, 0.5f, 3.0f);*/
-	glm::mat4  projection = glm::ortho(-1.0f, 1.0f, 1.0f, -1.0f);
+	glm::mat4  projection = glm::ortho(-1.0f, 1.0f, 1.0f, -1.0f, -3.0f, 3.0f);
 
 	glUniformMatrix4fv(projectionUniformLocation, 1, GL_FALSE, glm::value_ptr(projection));
 }

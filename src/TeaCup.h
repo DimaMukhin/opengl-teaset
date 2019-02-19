@@ -24,4 +24,10 @@ public:
 private:
 	std::vector<Patch*> *patches;
 	GLuint modelUniformLocation;
+	GLuint vertexPositionAttribLocation;
+	GLuint pointsVAO, pointsVBO;
+
+	void initPatches();
+
+	void initPoints();
 };

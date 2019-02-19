@@ -289,8 +289,45 @@ glm::vec3* TeaCup::vertices = new glm::vec3[numOfVertices]{
 TeaCup::TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation)
 {
 	this->modelUniformLocation = modelUniformLocation;
-	patches = new std::vector<Patch*>();
+	this->vertexPositionAttribLocation = vertexPositionAttribLocation;
 	
+	initPatches();
+
+	initPoints();
+}
+
+void TeaCup::display()
+{
+	// displaying the patches
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
+
+	for (int i = 0; i < patches->size(); i++) {
+		(*patches)[i]->display();
+	}
+
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
+
+	// displaying the control points
+	/*glBindVertexArray(pointsVAO);
+
+	glPointSize(3.0f);
+	glDrawArrays(GL_POINTS, 0, numOfVertices);
+
+	glBindVertexArray(0);*/
+}
+
+TeaCup::~TeaCup()
+{
+}
+
+void TeaCup::initPatches()
+{
+	patches = new std::vector<Patch*>();
+
 	int count = 0;
 	for (int i = 0; i < numOfPatches; i++) {
 		glm::vec3 cps[16];
@@ -327,21 +364,19 @@ TeaCup::TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation)
 	}
 }
 
-void TeaCup::display()
+void TeaCup::initPoints()
 {
-	glm::mat4 model;
-	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
-	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	glGenVertexArrays(1, &pointsVAO);
+	glBindVertexArray(pointsVAO);
 
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
+	glGenBuffers(1, &pointsVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, pointsVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVertices, vertices, GL_STATIC_DRAW);
 
-	for (int i = 0; i < patches->size(); i++) {
-		(*patches)[i]->display();
-	}
+	glEnableVertexAttribArray(vertexPositionAttribLocation);
+	glVertexAttribPointer(vertexPositionAttribLocation, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
-}
-
-TeaCup::~TeaCup()
-{
+	// unbinding
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
