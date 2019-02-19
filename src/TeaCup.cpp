@@ -286,11 +286,14 @@ glm::vec3* TeaCup::vertices = new glm::vec3[numOfVertices]{
 	glm::vec3(-0.409091,0.363636,0.0454545)
 };
 
-TeaCup::TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation)
+TeaCup::TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation, GLuint colorUniformLocation)
 {
 	this->modelUniformLocation = modelUniformLocation;
 	this->vertexPositionAttribLocation = vertexPositionAttribLocation;
+	this->colorUniformLocation = colorUniformLocation;
 	
+	showControlPoints = false;
+
 	initPatches();
 
 	initPoints();
@@ -303,21 +306,34 @@ void TeaCup::display()
 	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
+	glUniform4fv(colorUniformLocation, 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
 
 	for (int i = 0; i < patches->size(); i++) {
 		(*patches)[i]->display();
 	}
 
-	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
-
 	// displaying the control points
-	/*glBindVertexArray(pointsVAO);
 
-	glPointSize(3.0f);
-	glDrawArrays(GL_POINTS, 0, numOfVertices);
+	if (showControlPoints) {
+		glUniform4fv(colorUniformLocation, 1, glm::value_ptr(glm::vec4(0.0f, 0.5f, 0.0f, 1.0f)));
 
-	glBindVertexArray(0);*/
+		glBindVertexArray(pointsVAO);
+
+		glPointSize(3.0f);
+		glDrawArrays(GL_POINTS, 0, numOfVertices);
+
+		glBindVertexArray(0);
+
+		glUniform4fv(colorUniformLocation, 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
+	}
+	
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
+}
+
+void TeaCup::setShowControlPoints(bool show)
+{
+	showControlPoints = show;
 }
 
 TeaCup::~TeaCup()

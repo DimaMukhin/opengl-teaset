@@ -2,6 +2,7 @@
 
 in vec4 vPosition;
 uniform mat4 model, view, projection;
+uniform vec4 color;
 
 void main()
 {

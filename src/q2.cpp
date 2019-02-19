@@ -11,7 +11,7 @@
 const char *WINDOW_TITLE = "A2Q2";
 const double FRAME_RATE_MS = 1000.0 / 60.0;
 
-GLuint  modelUniformLocation, viewUniformLocation, projectionUniformLocation;
+GLuint  modelUniformLocation, viewUniformLocation, projectionUniformLocation, colorUniformLocation;
 
 std::vector<glm::vec4> *surfaceVertices;
 std::vector<GLuint> *surfaceIndices;
@@ -34,12 +34,14 @@ void init()
 	modelUniformLocation = glGetUniformLocation(program, "model");
 	viewUniformLocation = glGetUniformLocation(program, "view");
 	projectionUniformLocation = glGetUniformLocation(program, "projection");
+	colorUniformLocation = glGetUniformLocation(program, "color");
 
 	// setting default values for uniform variables
 	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
+	glUniform4fv(colorUniformLocation, 1, glm::value_ptr(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)));
 
-	tc = new TeaCup(vPosition, modelUniformLocation);
+	tc = new TeaCup(vPosition, modelUniformLocation, colorUniformLocation);
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -59,12 +61,17 @@ void display(void)
 
 //----------------------------------------------------------------------------
 
+bool showControlPoints = false;
 void keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
 	case 033: // Escape Key
 	case 'q': case 'Q':
 		exit(EXIT_SUCCESS);
+		break;
+	case ' ':
+		showControlPoints = !showControlPoints;
+		tc->setShowControlPoints(showControlPoints);
 		break;
 	}
 }

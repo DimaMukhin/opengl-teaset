@@ -15,9 +15,11 @@ public:
 	static int *indices;
 	static glm::vec3 *vertices;
 
-	TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation);
+	TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation, GLuint colorUniformLocation);
 
 	void display();
+
+	void setShowControlPoints(bool show);
 
 	~TeaCup();
 
@@ -25,7 +27,9 @@ private:
 	std::vector<Patch*> *patches;
 	GLuint modelUniformLocation;
 	GLuint vertexPositionAttribLocation;
+	GLuint colorUniformLocation;
 	GLuint pointsVAO, pointsVBO;
+	bool showControlPoints;
 
 	void initPatches();
 
