@@ -286,8 +286,9 @@ glm::vec3* TeaCup::vertices = new glm::vec3[numOfVertices]{
 	glm::vec3(-0.409091,0.363636,0.0454545)
 };
 
-TeaCup::TeaCup(GLuint vertexPositionAttribLocation)
+TeaCup::TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation)
 {
+	this->modelUniformLocation = modelUniformLocation;
 	patches = new std::vector<Patch*>();
 	
 	int count = 0;
@@ -328,9 +329,17 @@ TeaCup::TeaCup(GLuint vertexPositionAttribLocation)
 
 void TeaCup::display()
 {
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(model));
+
 	for (int i = 0; i < patches->size(); i++) {
 		(*patches)[i]->display();
 	}
+
+	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 }
 
 TeaCup::~TeaCup()

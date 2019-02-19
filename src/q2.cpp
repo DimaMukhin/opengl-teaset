@@ -39,7 +39,7 @@ void init()
 	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 
-	tc = new TeaCup(vPosition);
+	tc = new TeaCup(vPosition, modelUniformLocation);
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -80,8 +80,18 @@ void mouse(int button, int state, int x, int y)
 
 //----------------------------------------------------------------------------
 
+GLfloat cameraAngle = 0.0f;
 void update(void)
 {
+	glm::mat4 view;
+	view = glm::rotate(view, glm::radians(cameraAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
+
+	cameraAngle += 0.1f;
+	if (cameraAngle >= 360.0f) {
+		cameraAngle = 0.0f;
+	}
 }
 
 //----------------------------------------------------------------------------

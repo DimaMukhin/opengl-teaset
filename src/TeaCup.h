@@ -4,6 +4,8 @@
 #include "Patch.h"
 
 #include <vector>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class TeaCup
 {
@@ -13,7 +15,7 @@ public:
 	static int *indices;
 	static glm::vec3 *vertices;
 
-	TeaCup(GLuint vertexPositionAttribLocation);
+	TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation);
 
 	void display();
 
@@ -21,4 +23,5 @@ public:
 
 private:
 	std::vector<Patch*> *patches;
+	GLuint modelUniformLocation;
 };
