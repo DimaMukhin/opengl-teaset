@@ -1,7 +1,7 @@
 // Display a cube, using glDrawElements
 
 #include "common.h"
-#include "Patch.h"
+#include "TeaCup.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,7 +16,7 @@ GLuint  modelUniformLocation, viewUniformLocation, projectionUniformLocation;
 std::vector<glm::vec4> *surfaceVertices;
 std::vector<GLuint> *surfaceIndices;
 
-Patch *testPatch;
+TeaCup *tc;
 
 //----------------------------------------------------------------------------
 
@@ -39,28 +39,7 @@ void init()
 	glUniformMatrix4fv(modelUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
 
-	glm::mat4 px = glm::mat4(
-		0.409091f, 0.409091f, 0.229091f, 0.0f,
-		0.409091f, 0.409091f, 0.229091f, 0.0f,
-		0.454545f, 0.454545f, 0.254545f, 0.0f,
-		0.454545f, 0.454545f, 0.254545f, 0.0f
-	);
-
-	glm::mat4 py = glm::mat4(
-		0.772727f, 0.772727f, 0.772727f, 0.772727f,
-		0.886364f, 0.886364f, 0.886364f, 0.886364f,
-		0.886364f, 0.886364f, 0.886364f, 0.886364f,
-		0.772727f, 0.772727f, 0.772727f, 0.772727f
-	);
-
-	glm::mat4 pz = glm::mat4(
-		0.0f, -0.229091f, -0.409091f, -0.409091f,
-		0.0f, -0.229091f, -0.409091f, -0.409091f,
-		0.0f, -0.254545f, -0.454545f, -0.454545f,
-		0.0f, -0.254545f, -0.454545f, -0.454545f
-	);
-
-	testPatch = new Patch(px, py, pz, vPosition);
+	tc = new TeaCup(vPosition);
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -72,7 +51,7 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	testPatch->display();
+	tc->display();
 
 	glutSwapBuffers();
 	glFinish();
