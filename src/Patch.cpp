@@ -14,7 +14,9 @@ void Patch::display()
 {
 	glBindVertexArray(VAO);
 
-	glDrawElements(GL_TRIANGLES, indices->size(), GL_UNSIGNED_INT, 0);
+	for (int i = 0; i < indices->size(); i += 3) {
+		glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_INT, (void *)(i * sizeof(GLuint)));
+	}
 
 	glBindVertexArray(0);
 }
