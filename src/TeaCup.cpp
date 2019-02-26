@@ -32,24 +32,6 @@ int* TeaCup::indices = new int[numOfPatches * 16]{
 	150,155,156,129,180,187,188,157,183,189,190,161,186,191,192,165
 };
 
-int* TeaCup::cpIndices = new int[numOfPatches * 12]{
-	0,3,7,4,
-	4,7,11,8,
-	8,11,15,12,
-
-	3,18,21,7,
-	7,21,24,11,
-	11,24,27,15,
-
-	18,30,33,21,
-	21,33,36,24,
-	24,36,39,27,
-
-	30,0,4,33,
-	33,4,8,36,
-	36,8,12,39
-};
-
 glm::vec4* TeaCup::vertices = new glm::vec4[numOfVertices]{
 	glm::vec4(0.409091,0.772727,0.0, 1.0),
 	glm::vec4(0.409091,0.772727,-0.229091, 1.0),
@@ -339,10 +321,7 @@ void TeaCup::display()
 		glBindVertexArray(pointsVAO);
 
 		glPointSize(3.0f);
-		//glDrawArrays(GL_POINTS, 0, numOfVertices);
-		for (int i = 0; i < 4 * 12; i += 4) {
-			glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_INT, (void *)(i * sizeof(GLuint)));
-		}
+		glDrawArrays(GL_POINTS, 0, numOfVertices);
 
 		glBindVertexArray(0);
 
@@ -412,10 +391,6 @@ void TeaCup::initPoints()
 	glGenBuffers(1, &pointsVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, pointsVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVertices, vertices, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &pointsIBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pointsIBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cpIndices[0]) * numOfPatches * 4, cpIndices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(vertexPositionAttribLocation);
 	glVertexAttribPointer(vertexPositionAttribLocation, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));

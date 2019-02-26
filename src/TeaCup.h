@@ -13,7 +13,6 @@ public:
 	static int numOfPatches;
 	static int numOfVertices;
 	static int *indices;
-	static int *cpIndices;
 	static glm::vec4 *vertices;
 
 	TeaCup(GLuint vertexPositionAttribLocation, GLuint modelUniformLocation, GLuint colorUniformLocation);
@@ -29,7 +28,7 @@ private:
 	GLuint modelUniformLocation;
 	GLuint vertexPositionAttribLocation;
 	GLuint colorUniformLocation;
-	GLuint pointsVAO, pointsVBO, pointsIBO;
+	GLuint pointsVAO, pointsVBO;
 	bool showControlPoints;
 
 	void initPatches();

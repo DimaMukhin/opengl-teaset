@@ -17,6 +17,11 @@ GLuint  modelUniformLocation, viewUniformLocation, projectionUniformLocation, co
 // tea cup
 TeaCup *tc;
 
+// Array of rotation angles (in degrees) for each coordinate axis
+enum { Xaxis = 0, Yaxis = 1, Zaxis = 2, NumAxes = 3 };
+int Axis = Yaxis;
+GLfloat Theta[NumAxes] = { 0.0, 0.0, 0.0 };
+
 //----------------------------------------------------------------------------
 
 // OpenGL initialization
@@ -81,24 +86,31 @@ void keyboard(unsigned char key, int x, int y)
 void mouse(int button, int state, int x, int y)
 {
 	if (state == GLUT_DOWN) {
-
+		switch (button) {
+			case GLUT_LEFT_BUTTON:    Axis = Xaxis;  break;
+			case GLUT_MIDDLE_BUTTON:  Axis = Yaxis;  break;
+			case GLUT_RIGHT_BUTTON:   Axis = Zaxis;  break;
+		}
 	}
 }
 
 //----------------------------------------------------------------------------
 
 // rotate camera around the world
-GLfloat cameraAngle = 0.0f;
 void update(void)
 {
 	glm::mat4 view;
-	view = glm::rotate(view, glm::radians(cameraAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	view = glm::rotate(view, glm::radians(Theta[Xaxis]), glm::vec3(1, 0, 0));
+	view = glm::rotate(view, glm::radians(Theta[Yaxis]), glm::vec3(0, 1, 0));
+	view = glm::rotate(view, glm::radians(Theta[Zaxis]), glm::vec3(0, 0, 1));
 
 	glUniformMatrix4fv(viewUniformLocation, 1, GL_FALSE, glm::value_ptr(view));
 
-	cameraAngle += 0.1f;
-	if (cameraAngle >= 360.0f) {
-		cameraAngle = 0.0f;
+	Theta[Axis] += 0.5;
+
+	if (Theta[Axis] > 360.0) {
+		Theta[Axis] -= 360.0;
 	}
 }
 
