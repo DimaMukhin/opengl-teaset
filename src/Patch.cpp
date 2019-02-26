@@ -63,10 +63,10 @@ void Patch::init()
 void Patch::generateSurface(std::vector<glm::vec4>* vertices, std::vector<GLuint>* indices)
 {
 	int N = 10;
-	for (GLfloat u = 0.0f; u <= 1.0f; u += 1.0f / N) {
-		for (GLfloat v = 0.0f; v <= 1.0f; v += 1.0f / N) {
+	for (GLfloat u = 0.0f; u <= 1.01f; u += 1.0f / N) {
+		for (GLfloat v = 0.0f; v <= 1.01f; v += 1.0f / N) {
 			glm::vec4 mvx = glm::vec4(1, v, v*v, v*v*v) * middleX;
-			glm::vec4 mvy = glm::vec4(1, v, v*v, v*v*v)* middleY;
+			glm::vec4 mvy = glm::vec4(1, v, v*v, v*v*v) * middleY;
 			glm::vec4 mvz = glm::vec4(1, v, v*v, v*v*v) * middleZ;
 
 			GLfloat finalX = glm::dot(mvx, glm::vec4(1, u, u*u, u*u*u));
@@ -79,8 +79,8 @@ void Patch::generateSurface(std::vector<glm::vec4>* vertices, std::vector<GLuint
 	}
 
 	GLuint count = 0;
-	for (int i = 0; i < N - 1; i++) {
-		for (int j = 0; j < N - 1; j++) {
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
 			indices->push_back(count);
 			indices->push_back(count + 1);
 			indices->push_back(count + N + 1);
