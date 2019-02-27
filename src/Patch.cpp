@@ -83,10 +83,10 @@ void Patch::generateSurface(std::vector<glm::vec4>* vertices, std::vector<GLuint
 		for (int j = 0; j < N; j++) {
 			indices->push_back(count);
 			indices->push_back(count + 1);
-			indices->push_back(count + N + 1);
+			indices->push_back(count + N + 2);
 
+			indices->push_back(count + N + 2);
 			indices->push_back(count + N + 1);
-			indices->push_back(count + N);
 			indices->push_back(count);
 
 			count++;
