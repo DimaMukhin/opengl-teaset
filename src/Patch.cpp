@@ -1,15 +1,18 @@
 #include "Patch.h"
 
+// Bezier curve matrices
 glm::mat4 Patch::MB = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f, -3.0f, 3.0f, 0.0f, 0.0f, 3.0f, -6.0f, 3.0f, 0.0f, -1.0f, 3.0f, -3.0f, 1.0f);
 glm::mat4 Patch::MBT = glm::mat4(1.0f, -3.0f, 3.0f, -1.0f, 0.0f, 3.0f, -6.0f, 3.0f, 0.0f, 0.0f, 3.0f, -3.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 
 Patch::Patch(glm::mat4 px, glm::mat4 py, glm::mat4 pz, GLuint vertexPositionAttribLocation)
 {
+	// control points x,y,z values matrix
 	this->px = px;
 	this->py = py;
 	this->pz = pz;
 	this->vertexPositionAttribLocation = vertexPositionAttribLocation;
 
+	// precalculating middle part of matrix (Mb * G * Mbt)
 	middleX = MBT * px * MB;
 	middleY = MBT * py * MB;
 	middleZ = MBT * pz * MB;
@@ -62,22 +65,26 @@ void Patch::init()
 // calculate the vertices of the patch based on its control points
 void Patch::generateSurface(std::vector<glm::vec4>* vertices, std::vector<GLuint>* indices)
 {
-	int N = 10;
+	int N = 10; // number of subdivissions
 	for (GLfloat u = 0.0f; u <= 1.01f; u += 1.0f / N) {
 		for (GLfloat v = 0.0f; v <= 1.01f; v += 1.0f / N) {
+			// multiplying V with middle part of matrix
 			glm::vec4 mvx = glm::vec4(1, v, v*v, v*v*v) * middleX;
 			glm::vec4 mvy = glm::vec4(1, v, v*v, v*v*v) * middleY;
 			glm::vec4 mvz = glm::vec4(1, v, v*v, v*v*v) * middleZ;
 
+			// getting funal point by multiplying by U
 			GLfloat finalX = glm::dot(mvx, glm::vec4(1, u, u*u, u*u*u));
 			GLfloat finalY = glm::dot(mvy, glm::vec4(1, u, u*u, u*u*u));
 			GLfloat finalZ = glm::dot(mvz, glm::vec4(1, u, u*u, u*u*u));
 
+			// adding final point to lost of vertices
 			glm::vec4 finalPoint(finalX, finalY, finalZ, 1.0f);
 			vertices->push_back(finalPoint);
 		}
 	}
 
+	// calculating indices based on the patch to draw it as a mesh
 	GLuint count = 0;
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
