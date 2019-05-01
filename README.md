@@ -1,6 +1,6 @@
 # opengl-teaset
 
-
+![demo](./demo.png)
 
 ## Getting Started
 
